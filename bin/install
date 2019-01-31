@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+# Exit, if return non-zero or use an undefined variable.
+set -eu
+
+cd "$(dirname "$0")/.."
+
+# Variables
+VERSION=${1:-1.13.2}
+
+os=$(./bin/os)
+distro=$(./bin/distro)
+
+if [ $os = windows ]; then
+	DOWNLOAD_URL=https://storage.googleapis.com/kubernetes-release/release/v$VERSION/bin/windows/amd64/kubectl.exe
+elif [ $os = darwin ]; then
+	DOWNLOAD_URL=https://storage.googleapis.com/kubernetes-release/release/v$VERSION/bin/darwin/amd64/kubectl
+else
+	DOWNLOAD_URL=https://storage.googleapis.com/kubernetes-release/release/v$VERSION/bin/linux/amd64/kubectl
+fi
+
+# Clean
+clean() {
+	rm -rf temp
+}
+
+# Start
+clean
+filename=$(./bin/download $DOWNLOAD_URL)
+
+rm -rf "versions/$VERSION"
+mkdir -p "versions/$VERSION"
+mv "$filename" "versions/$VERSION"
