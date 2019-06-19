@@ -29,5 +29,5 @@ clean
 filename=$(./bin/download $DOWNLOAD_URL)
 
 rm -rf "versions/$VERSION"
-mkdir -p "versions/$VERSION"
-mv "$filename" "versions/$VERSION"
+mkdir -p "versions/$VERSION/bin"
+mv "$filename" "versions/$VERSION/bin"
